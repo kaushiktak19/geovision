@@ -1,37 +1,3 @@
-// // src/components/Map.tsx
-// import React, { useEffect, useRef } from 'react';
-// import 'ol/ol.css';
-// import { Map, View } from 'ol';
-// import TileLayer from 'ol/layer/Tile';
-// import XYZ from 'ol/source/XYZ';
-// import { fromLonLat } from 'ol/proj';
-
-// const MapComponent: React.FC = () => {
-//     const mapElement = useRef<HTMLDivElement | null>(null);
-
-//     useEffect(() => {
-//         const map = new Map({
-//             target: mapElement.current!,
-//             layers: [
-//                 new TileLayer({
-//                     source: new XYZ({
-//                         url: 'https://{a-c}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-//                     }),
-//                 }),
-//             ],
-//             view: new View({
-//                 center: fromLonLat([-95.7129, 37.0902]), // Centered on the USA
-//                 zoom: 4,
-//             }),
-//         });
-
-//         return () => map.setTarget(undefined);
-//     }, []);
-
-//     return <div ref={mapElement} style={{ width: '100%', height: '100vh' }} />;
-// };
-
-// export default MapComponent;
 import React, { useEffect, useRef, useState } from 'react';
 import 'ol/ol.css';
 import { Map, View } from 'ol';
@@ -97,21 +63,28 @@ const MapComponent: React.FC = () => {
             overlays: [overlay],
         });
 
-        map.on('pointermove', (event) => {
+        const handlePointerMove = (event: any) => {
             map.getTargetElement().style.cursor = map.hasFeatureAtPixel(event.pixel) ? 'pointer' : '';
             const feature = map.getFeaturesAtPixel(event.pixel)[0];
             if (feature) {
                 const coordinates = event.coordinate;
                 const name = feature.get('name');
-                setPopupContent(` ${name}`);
+                setPopupContent(`State: ${name}`);
                 setPopupPosition(coordinates);
                 overlay.setPosition(coordinates);
             } else {
                 overlay.setPosition(undefined);
             }
-        });
+        };
 
-        return () => map.setTarget(undefined);
+        map.on('pointermove', handlePointerMove);
+
+        // Cleanup function to properly remove the map and overlay
+        return () => {
+            map.un('pointermove', handlePointerMove);
+            map.setTarget(undefined);
+            overlay.setElement(undefined);
+        };
     }, []);
 
     return (
@@ -125,4 +98,3 @@ const MapComponent: React.FC = () => {
 };
 
 export default MapComponent;
-

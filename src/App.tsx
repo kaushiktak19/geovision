@@ -1,7 +1,7 @@
-// src/App.tsx
 import React from 'react';
 import './App.css';
 import MapComponent from './components/MapComponent';
+import Legend from './components/Legend';
 
 const App: React.FC = () => {
     return (
@@ -9,7 +9,10 @@ const App: React.FC = () => {
             <header className="App-header">
                 <h1>US Population Density Map</h1>
             </header>
-            <MapComponent />
+            <div className="map-container">
+                <MapComponent />
+                <Legend />
+            </div>
         </div>
     );
 };
