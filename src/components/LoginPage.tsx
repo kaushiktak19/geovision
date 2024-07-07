@@ -1,14 +1,16 @@
 import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import '../styles/LoginPage.css';
 
 const LoginPage: React.FC = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [showCredentials, setShowCredentials] = useState(false);
+    const navigate = useNavigate();
 
     const handleLogin = () => {
-        if ((username === 'user@gmail.com' || username === 'user')  && password === 'password') {
-            window.location.href = '/map'; 
+        if ((username === 'user@gmail.com' || username === 'user') && password === 'password') {
+            navigate('/map'); 
         } else {
             alert('Invalid username or password');
         }
@@ -20,7 +22,7 @@ const LoginPage: React.FC = () => {
                 <h2>Login</h2>
                 <form>
                     <div className="form-group">
-                        <label>Username:</label>
+                        <label>Username or Email:</label>
                         <input
                             type="text"
                             placeholder="Enter username or email"
@@ -50,9 +52,10 @@ const LoginPage: React.FC = () => {
                                 <p>Email: user@gmail.com</p>
                                 <p>Password: password</p>
                             </div>
-                            )}
+                        )}
                     </div>
                 </form>
+
             </div>
         </div>
     );
