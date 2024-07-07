@@ -110,12 +110,17 @@ import VectorSource from 'ol/source/Vector';
 import { Style, Fill, Stroke } from 'ol/style';
 import { GeoJSON } from 'ol/format';
 import Overlay from 'ol/Overlay';
+import Legend from './Legend';
+import '../styles/MapComponent.css'; // Make sure to import the CSS file for button styles
 
 const MapComponent: React.FC = () => {
     const mapElement = useRef<HTMLDivElement | null>(null);
-    const popupElement = useRef<HTMLDivElement | null>(null);
+    const popupElement = useRef<HTMLDivElement | null>(null); // Create a ref for the popup element
     const [popupContent, setPopupContent] = useState<string>('');
     const [popupPosition, setPopupPosition] = useState<number[]>([]);
+    const [showDensity, setShowDensity] = useState<boolean>(true);
+    const [map, setMap] = useState<Map | null>(null);
+    const [vectorLayer, setVectorLayer] = useState<VectorLayer<any> | null>(null);
 
     useEffect(() => {
         if (!mapElement.current || !popupElement.current) return;
@@ -125,25 +130,22 @@ const MapComponent: React.FC = () => {
             format: new GeoJSON(),
         });
 
-        // Function to determine fill color based on population density
-        const getDensityColor = (density: number) => {
-            if (density < 25) return '#FFEDA0';
-            if (density < 50) return '#FED976';
-            if (density < 100) return '#FEB24C';
-            if (density < 250) return '#FD8D3C';
-            if (density < 500) return '#FC4E2A';
-            if (density < 750) return '#E31A1C';
-            if (density < 1000) return '#BD0026';
-            return '#800026';
-        };
-
-        const vectorLayer = new VectorLayer({
+        const newVectorLayer = new VectorLayer({
             source: vectorSource,
             style: (feature) => {
                 const density = feature.get('density');
+                let fillColor = 'rgba(0, 0, 255, 0.1)';
+                if (density > 1000) fillColor = 'rgba(128, 0, 38, 0.85)';
+                else if (density > 750) fillColor = 'rgba(189, 0, 38, 0.8)';
+                else if (density > 500) fillColor = 'rgba(227, 26, 28, 0.8)';
+                else if (density > 250) fillColor = 'rgba(252, 78, 42, 0.8)';
+                else if (density > 100) fillColor = 'rgba(253, 141, 60, 0.8)';
+                else if (density > 50) fillColor = 'rgba(254, 178, 76, 0.8)';
+                else if (density > 25) fillColor = 'rgba(254, 217, 118, 0.8)';
+                else if (density > 0) fillColor = 'rgba(255, 237, 160, 0.8)';
                 return new Style({
                     fill: new Fill({
-                        color: getDensityColor(density),
+                        color: fillColor,
                     }),
                     stroke: new Stroke({
                         color: '#319FD3',
@@ -162,7 +164,7 @@ const MapComponent: React.FC = () => {
             },
         });
 
-        const map = new Map({
+        const newMap = new Map({
             target: mapElement.current!,
             layers: [
                 new TileLayer({
@@ -170,23 +172,23 @@ const MapComponent: React.FC = () => {
                         url: 'https://{a-c}.tile.openstreetmap.org/{z}/{x}/{y}.png',
                     }),
                 }),
-                vectorLayer,
+                newVectorLayer,
             ],
             view: new View({
                 center: fromLonLat([-95.7129, 37.0902]), // Centered on the USA
-                zoom: 4,
+                zoom: 4.75,
             }),
             overlays: [overlay],
         });
 
         const handlePointerMove = (event: any) => {
-            map.getTargetElement().style.cursor = map.hasFeatureAtPixel(event.pixel) ? 'pointer' : '';
-            const feature = map.getFeaturesAtPixel(event.pixel)[0];
+            newMap.getTargetElement().style.cursor = newMap.hasFeatureAtPixel(event.pixel) ? 'pointer' : '';
+            const feature = newMap.getFeaturesAtPixel(event.pixel)[0];
             if (feature) {
                 const coordinates = event.coordinate;
                 const name = feature.get('name');
                 const density = feature.get('density');
-                setPopupContent(`State: ${name}<br>Density: ${density}`);
+                setPopupContent(`State: ${name}, Density: ${density}`);
                 setPopupPosition(coordinates);
                 overlay.setPosition(coordinates);
             } else {
@@ -194,21 +196,37 @@ const MapComponent: React.FC = () => {
             }
         };
 
-        map.on('pointermove', handlePointerMove);
+        newMap.on('pointermove', handlePointerMove);
+
+        setMap(newMap);
+        setVectorLayer(newVectorLayer);
 
         // Cleanup function to properly remove the map and overlay
         return () => {
-            map.un('pointermove', handlePointerMove);
-            map.setTarget(undefined);
+            newMap.un('pointermove', handlePointerMove);
+            newMap.setTarget(undefined);
             overlay.setElement(undefined);
         };
     }, []);
+
+    const toggleDensityLayer = () => {
+        if (vectorLayer) {
+            vectorLayer.setOpacity(showDensity ? 0 : 0.8);
+            setShowDensity(!showDensity);
+        }
+    };
 
     return (
         <>
             <div ref={mapElement} style={{ width: '100%', height: '100vh' }} />
             <div ref={popupElement} id="popup" className="ol-popup" style={{ position: 'absolute', backgroundColor: 'rgba(255, 255, 255, 0.8)', padding: '5px', borderRadius: '5px', border: '1px solid black', whiteSpace: 'nowrap', transform: 'translateY(10px)' }}>
-                <div dangerouslySetInnerHTML={{ __html: popupContent }} />
+                <div>{popupContent}</div>
+            </div>
+            <div className="legend-container" style={{ position: 'absolute', bottom: '10px', left: '10px' }}>
+                <button className="toggle-button" onClick={toggleDensityLayer} style={{ marginBottom: '10px' }}>
+                    {showDensity ? 'Hide' : 'Show'} Density
+                </button>
+                <Legend />
             </div>
         </>
     );
