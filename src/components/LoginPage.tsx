@@ -8,7 +8,7 @@ const LoginPage: React.FC = () => {
 
     const handleLogin = () => {
         if ((username === 'user@gmail.com' || username === 'user')  && password === 'password') {
-            window.location.href = '/map'; // Navigate to '/map' on successful login
+            window.location.href = '/map'; 
         } else {
             alert('Invalid username or password');
         }
