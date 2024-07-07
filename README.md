@@ -52,6 +52,7 @@ This is a React-based web application that visualizes population density across 
 - `src/`: Contains the source code of the application.
   - `components/`: Contains the React components used in the application.
     - `MapComponent.tsx`: The main map component with population density features.
+    - `Legend.tsx`: The Legend component to represent population density data.
     - `LoginPage.tsx`: The dummy login page component.
   - `App.tsx`: The main application component.
   - `index.tsx`: The entry point of the React application.
