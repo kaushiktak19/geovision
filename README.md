@@ -124,26 +124,6 @@ This section provides instructions for deploying your Dockerized application usi
     ```sh
     http://<EXTERNAL-IP>:<PORT>
     ```
-
-### Deployment
-
-The application is deployed using Vercel for now. You can follow the steps below to deploy your own version:
-
-1. **Sign up for a Vercel account** if you haven't already.
-2. **Install the Vercel CLI**:
-
-    ```bash
-    npm install -g vercel
-    ```
-
-3. **Deploy the application**:
-
-    ```bash
-    vercel
-    ```
-
-    Follow the prompts to link your project to Vercel and deploy it.
-
 ### Demo Credentials
 
 To use the dummy login page, you can click the "Show Demo Credentials" button on the login page to view the demo username and password.
