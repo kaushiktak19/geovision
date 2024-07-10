@@ -82,12 +82,11 @@ This setup allows you to easily deploy and access the application locally using 
 
 This section provides instructions for deploying your Dockerized application using Kubernetes. Ensure that you have a working Kubernetes cluster (like Minikube or a cloud-based Kubernetes service) and `kubectl` set up on your machine.
 
-1. **Build and Push Docker Image**  
+1. **Pull Docker Image**  
     Ensure your Docker image is built and pushed to a container registry like Docker Hub.
     ```bash
     docker login
-    docker build -t kaushikt19/geovision .
-    docker push kaushikt19/geovision
+    docker pull kaushikt19/geovision
     ```
 
 2. **Create a Kubernetes Deployment**  
