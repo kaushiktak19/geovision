@@ -57,6 +57,22 @@ This is a React-based web application that visualizes population density across 
   - `App.tsx`: The main application component.
   - `index.tsx`: The entry point of the React application.
 
+### Dockerization
+
+This application is dockerized. You can access it via docker images on your local machine. Make sure you have docker set-up on your machine.
+
+1. **Login to docker on your terminal** 
+    ```bash
+    docker login
+    ```
+2. **Run docker image** 
+    ```bash
+    docker run -it -p 3000:80 geovision
+    ```
+3. Access the application at `http://localhost:3000`.
+
+Now you can access the application on your local host at port 3000. You can use any free port instead of 3000 too.
+
 ### Deployment
 
 The application is deployed using Vercel. You can follow the steps below to deploy your own version:

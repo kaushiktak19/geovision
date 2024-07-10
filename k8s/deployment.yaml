@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: geovision-deployment
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: geovision
+  template:
+    metadata:
+      labels:
+        app: geovision
+    spec:
+      containers:
+      - name: geovision
+        image: kaushiktak19/geovision
+        ports:
+        - containerPort: 80
