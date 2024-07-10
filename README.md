@@ -67,7 +67,7 @@ This application is dockerized. You can access it via docker images on your loca
     ```
 2. **Run docker image** 
     ```bash
-    docker run -it -p 3000:80 geovision
+    docker run -it -p 3000:80 kaushikt19/geovision
     ```
 3. Access the application at `http://localhost:3000`.
 
