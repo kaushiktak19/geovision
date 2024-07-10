@@ -17,3 +17,4 @@ spec:
         image: kaushiktak19/geovision
         ports:
         - containerPort: 80
+        
