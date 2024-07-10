@@ -57,25 +57,78 @@ This is a React-based web application that visualizes population density across 
   - `App.tsx`: The main application component.
   - `index.tsx`: The entry point of the React application.
 
-### Dockerization
+## Dockerization
 
-This application is dockerized. You can access it via docker images on your local machine. Make sure you have docker set-up on your machine.
+This project is containerized with Docker, making it easy to deploy and run on your local machine.
 
-1. **Login to docker on your terminal** 
-    ```bash
-    docker login
+### Running the Docker Image
+
+1. **Login to Docker**:
+   Ensure you are logged in to Docker Hub on your terminal.
+   ```bash
+   docker login
     ```
 2. **Run docker image** 
+    Start the Docker container, mapping port 3000 on your local machine to port 80 in the container.
     ```bash
     docker run -it -p 3000:80 kaushikt19/geovision
     ```
-3. Access the application at `http://localhost:3000`.
+3. **Access the application** 
+    Open your web browser and go to http://localhost:3000 to view the application.
 
-Now you can access the application on your local host at port 3000. You can use any free port instead of 3000 too.
+This setup allows you to easily deploy and access the application locally using Docker. You can use any free port instead of 3000.
+
+## Kubernetes Orchestration
+
+This section provides instructions for deploying your Dockerized application using Kubernetes. Ensure that you have a working Kubernetes cluster (like Minikube or a cloud-based Kubernetes service) and `kubectl` set up on your machine.
+
+1. **Build and Push Docker Image**  
+    Ensure your Docker image is built and pushed to a container registry like Docker Hub.
+    ```bash
+    docker login
+    docker build -t kaushikt19/geovision .
+    docker push kaushikt19/geovision
+    ```
+
+2. **Create a Kubernetes Deployment**  
+    Create a deployment configuration file named `deployment.yaml`.
+   
+    Apply the deployment using `kubectl`:
+    ```bash
+    kubectl apply -f deployment.yaml
+    ```
+
+3. **Expose the Deployment**  
+    Create a service configuration file named `service.yaml`.
+    Apply the service using `kubectl`:
+    ```bash
+    kubectl apply -f service.yaml
+    ```
+
+4. **Check the Status**  
+    Verify that the deployment and service are running correctly.
+    ```bash
+    kubectl get deployments
+    kubectl get services
+    ```
+
+5. **Access the Application**  
+    For Minikube, you may need to run the following command to access the LoadBalancer service:
+    ```bash
+    minikube service geovision-service
+    ```
+    This command will open your default browser to the service URL. Alternatively, you can get the external IP and port by running:
+    ```bash
+    kubectl get services
+    ```
+    Access the application at the provided external IP and port. For example, if running locally via Minikube:
+    ```sh
+    http://<EXTERNAL-IP>:<PORT>
+    ```
 
 ### Deployment
 
-The application is deployed using Vercel. You can follow the steps below to deploy your own version:
+The application is deployed using Vercel for now. You can follow the steps below to deploy your own version:
 
 1. **Sign up for a Vercel account** if you haven't already.
 2. **Install the Vercel CLI**:
