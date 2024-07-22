@@ -116,12 +116,12 @@ const MapComponent: React.FC = () => {
 
     return (
         <>
-            <div ref={mapElement} style={{ width: '100%', height: '100vh' }} />
-            <div ref={popupElement} id="popup" className="ol-popup" style={{ position: 'absolute', backgroundColor: 'rgba(255, 255, 255, 0.8)', padding: '5px', borderRadius: '5px', border: '1px solid black', whiteSpace: 'nowrap', transform: 'translateY(10px)' }}>
+            <div ref={mapElement} className="w-full h-screen" />
+            <div ref={popupElement} id="popup" className="absolute bg-white bg-opacity-80 p-2 rounded shadow border text-xs" style={{ whiteSpace: 'nowrap', transform: 'translateY(10px)' }}>
                 <div>{popupContent}</div>
             </div>
-            <div className="legend-container" style={{ position: 'absolute', bottom: '10px', left: '10px' }}>
-                <button className="toggle-button" onClick={toggleDensityLayer} style={{ marginBottom: '10px' }}>
+            <div className="absolute bottom-4 left-4 flex flex-col items-start">
+                <button className="toggle-button mb-2 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700 transition duration-300" onClick={toggleDensityLayer}>
                     {showDensity ? 'Hide' : 'Show'} Density
                 </button>
                 <Legend />
