@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: geovision
-        image: kaushiktak19/geovision
+        image: kaushiktak19/geovision:latest
         ports:
         - containerPort: 80
         

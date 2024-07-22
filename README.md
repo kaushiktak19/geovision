@@ -16,7 +16,7 @@ This is a React-based web application that visualizes population density across 
 - **React**: A JavaScript library for building user interfaces.
 - **OpenLayers**: A high-performance, feature-packed library for creating interactive maps.
 - **TypeScript**: A typed superset of JavaScript that compiles to plain JavaScript.
-- **Vercel**: A platform for static site deployments.
+- **Tailwind CSS**: A utility-first CSS framework for rapidly building custom designs.
 
 ## Instructions to Run the Application Locally
 
